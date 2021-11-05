@@ -95,6 +95,26 @@ exports.editIncome = async (req, res, next) => {
 // @desc      Delete income
 // @route     DELETE /api/v1/incomes
 // @access    Private
-exports.deleteIncome = (req, res, next) => {
-    res.status(200).json({success: true, msg: 'Delete income'});
+exports.deleteIncome = async (req, res, next) => {
+
+    try {
+        const income = await Income.findByIdAndDelete(req.params.id);
+
+        if(!income) {
+            return res.status(400).json({
+                    success: false,
+                    msg: 'Income to delete not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: {}
+        })
+
+    } catch(err) {
+        res.status(400).json({success: false})
+        console.log(err);
+    }
+
 }
