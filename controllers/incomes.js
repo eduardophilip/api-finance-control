@@ -37,7 +37,7 @@ exports.getIncome = async (req, res, next) => {
             success: true, 
             data: income
         });
-        
+
     } catch(err) {
         res.status(400).json({success: false});
         console.log(err);
@@ -68,8 +68,28 @@ exports.addIncome = async (req, res, next) => {
 // @desc      Edit income
 // @route     PUT /api/v1/incomes
 // @access    Private
-exports.editIncome = (req, res, next) => {
-    res.status(200).json({success: true, msg: 'Edit income'});
+exports.editIncome = async (req, res, next) => {
+
+    try {
+        const income = await Income.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+
+        if(!income) {
+            res.status(400).json({
+                success: false,
+                msg: 'Income to edit not found'
+            });
+        }
+
+        res.status(200).json({success: true, data: income});
+
+    } catch(err) {
+        res.status(400).json({success: false})
+        console.log(err);
+    }
+
 }
 
 // @desc      Delete income
