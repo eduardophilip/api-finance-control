@@ -3,8 +3,13 @@ const app = express();
 const dotenv = require('dotenv');
 const colors = require('colors');
 const connectDB = require('./config/db');
+const morgan = require('morgan');
 
 dotenv.config({ path: './config/config.env' });
+
+if(process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 connectDB();
 
