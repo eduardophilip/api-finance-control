@@ -3,8 +3,19 @@ const Income = require('../models/Income')
 // @desc      Get all incomes
 // @route     GET /api/v1/incomes
 // @access    Public
-exports.getIncomes = (req, res, next) => {
-    res.status(200).json({success: true, msg: 'Show all incomes'});
+exports.getIncomes = async (req, res, next) => {
+
+    try {
+        const income = await Income.find()
+        res.status(200).json({
+            success: true, 
+            count: income.length, 
+            data: income
+        });
+    } catch(err) {
+        res.status(400).json({success: false});
+        console.log(err);
+    }
 }
 
 // @desc      Get single income
