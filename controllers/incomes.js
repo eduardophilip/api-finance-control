@@ -21,7 +21,28 @@ exports.getIncomes = async (req, res, next) => {
 // @desc      Get single income
 // @route     GET /api/v1/incomes
 // @access    Public
-exports.getIncome = (req, res, next) => {
+exports.getIncome = async (req, res, next) => {
+
+    try {
+        const income = await Income.findById(req.params.id);
+
+        if(!income) {
+            return res.status(400).json({
+                success: false,
+                msg: 'Income do not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true, 
+            data: income
+        });
+        
+    } catch(err) {
+        res.status(400).json({success: false});
+        console.log(err);
+    }
+
     res.status(200).json({success: true, msg: 'Show single income'});
 }
 
