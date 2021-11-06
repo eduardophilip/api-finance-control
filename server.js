@@ -17,9 +17,11 @@ app.use(express.json());
 
 // Require routes
 const incomes = require('./routes/incomes');
+const expenses = require('./routes/expenses');
 
 // Routes
 app.use('/api/v1/incomes', incomes);
+app.use('/api/v1/expenses', expenses);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log(`Server runnig in ${process.env.PORT}`.yellow.bold));
