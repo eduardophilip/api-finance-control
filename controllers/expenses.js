@@ -1,3 +1,5 @@
+const Expense = require('../models/Expense')
+
 // @desc      Get all expenses
 // @route     GET /api/v1/expenses
 // @access    Public
@@ -15,8 +17,20 @@ exports.getExpense = (req, res, next) => {
 // @desc      Add new expense
 // @route     POST /api/v1/expenses
 // @access    Private
-exports.addExpense = (req, res, next) => {
-    res.status(200).json({success: true, msg: 'Add new expense'});
+exports.addExpense = async (req, res, next) => {
+    
+    try {
+        const expense = await Expense.create(req.body);
+
+        res.status(201).json({
+            success: true,
+            data: expense
+        })
+    } catch(err) {
+        res.status(400).json({success: false});
+        console.log(err);
+    }
+
 }
 
 // @desc      Edit expense
