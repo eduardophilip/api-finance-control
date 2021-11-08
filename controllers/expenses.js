@@ -68,13 +68,54 @@ exports.addExpense = async (req, res, next) => {
 // @desc      Edit expense
 // @route     PUT /api/v1/expenses
 // @access    Private
-exports.editExpense = (req, res, next) => {
-    res.status(200).json({success: true, msg: 'Edit expense'});
+exports.editExpense = async (req, res, next) => {
+    try {
+        const expense = await Expense.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+
+        if(!expense) {
+            res.status(400).json({
+                success: false,
+                msg: 'Expense to edit not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: expense
+        })
+
+    } catch(err) {
+        res.status(400).json({success: false})
+        console.log(err);
+    }
 }
 
 // @desc      Delete expense
 // @route     DELETE /api/v1/expenses
 // @access    Private
-exports.deleteExpense = (req, res, next) => {
-    res.status(200).json({success: true, msg: 'Delete income'});
+exports.deleteExpense = async (req, res, next) => {
+
+    try {
+        const expense = await Expense.findByIdAndDelete(req.params.id);
+
+        if(!expense) {
+            return res.status(400).json({
+                    success: false,
+                    msg: 'Expense to delete not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: {}
+        })
+
+    } catch(err) {
+        res.status(400).json({success: false})
+        console.log(err);
+    }
+
 } 
