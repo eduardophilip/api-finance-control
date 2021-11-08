@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const connectDB = require('./config/db');
 const morgan = require('morgan');
+const errorHandler = require('./middleware/error')
 
 dotenv.config({ path: './config/config.env' });
 
@@ -22,6 +23,8 @@ const expenses = require('./routes/expenses');
 // Routes
 app.use('/api/v1/incomes', incomes);
 app.use('/api/v1/expenses', expenses);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log(`Server runnig in ${process.env.PORT}`.yellow.bold));

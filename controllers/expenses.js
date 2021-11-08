@@ -1,4 +1,5 @@
-const Expense = require('../models/Expense')
+const Expense = require('../models/Expense');
+const ErrorResponse = require('../utils/errorResponse')
 
 // @desc      Get all expenses
 // @route     GET /api/v1/expenses
@@ -14,8 +15,7 @@ exports.getExpenses = async (req, res, next) => {
             data: expense
         });
     } catch(err) {
-        res.status(400).json({success: false});
-        console.log(err);
+        next(err)
     }
 
 }
@@ -29,19 +29,15 @@ exports.getExpense = async (req, res, next) => {
         const expense = await Expense.findById(req.params.id);
 
         if (!expense) {
-            res.status(400).json({
-                success: false,
-                msg: 'Expense not found'
-            });
+            return next(new ErrorResponse(`Expense not found with id of ${req.params.id}`, 404));
         }
 
         res.status(200).json({
             success: true,
             data: expense
         }); 
-    } catch {
-        res.status(400).json({success: false});
-        console.log(err);
+    } catch(err) {
+        next(err)
     }
 
 }
@@ -59,8 +55,7 @@ exports.addExpense = async (req, res, next) => {
             data: expense
         })
     } catch(err) {
-        res.status(400).json({success: false});
-        console.log(err);
+        next(err)
     }
 
 }
@@ -76,10 +71,7 @@ exports.editExpense = async (req, res, next) => {
         });
 
         if(!expense) {
-            res.status(400).json({
-                success: false,
-                msg: 'Expense to edit not found'
-            });
+            return next(new ErrorResponse(`Expense to edit not found with id of ${req.params.id}`, 404));
         }
 
         res.status(200).json({
@@ -88,8 +80,7 @@ exports.editExpense = async (req, res, next) => {
         })
 
     } catch(err) {
-        res.status(400).json({success: false})
-        console.log(err);
+        next(err)
     }
 }
 
@@ -102,10 +93,7 @@ exports.deleteExpense = async (req, res, next) => {
         const expense = await Expense.findByIdAndDelete(req.params.id);
 
         if(!expense) {
-            return res.status(400).json({
-                    success: false,
-                    msg: 'Expense to delete not found'
-            });
+            return next(new ErrorResponse(`Expense to delete not found with id of ${req.params.id}`, 404));
         }
 
         res.status(200).json({
@@ -114,8 +102,7 @@ exports.deleteExpense = async (req, res, next) => {
         })
 
     } catch(err) {
-        res.status(400).json({success: false})
-        console.log(err);
+        next(err)
     }
 
 } 

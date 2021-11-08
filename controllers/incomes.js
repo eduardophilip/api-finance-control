@@ -1,4 +1,5 @@
-const Income = require('../models/Income')
+const Income = require('../models/Income');
+const ErrorResponse = require('../utils/errorResponse');
 
 // @desc      Get all incomes
 // @route     GET /api/v1/incomes
@@ -13,8 +14,7 @@ exports.getIncomes = async (req, res, next) => {
             data: income
         });
     } catch(err) {
-        res.status(400).json({success: false});
-        console.log(err);
+        next(err);
     }
 }
 
@@ -27,10 +27,7 @@ exports.getIncome = async (req, res, next) => {
         const income = await Income.findById(req.params.id);
 
         if(!income) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Income do not found'
-            });
+            return next(new ErrorResponse(`Income not found with id of ${req.params.id}`, 404));
         }
 
         res.status(200).json({
@@ -39,11 +36,8 @@ exports.getIncome = async (req, res, next) => {
         });
 
     } catch(err) {
-        res.status(400).json({success: false});
-        console.log(err);
+        next(err);
     }
-
-    res.status(200).json({success: true, msg: 'Show single income'});
 }
 
 // @desc      Add new income
@@ -59,8 +53,7 @@ exports.addIncome = async (req, res, next) => {
             data: income
         })
     } catch(err) {
-        res.status(400).json({success: false})
-        console.log(err);
+        next(err);
     }
 
 }
@@ -77,17 +70,13 @@ exports.editIncome = async (req, res, next) => {
         });
 
         if(!income) {
-            res.status(400).json({
-                success: false,
-                msg: 'Income to edit not found'
-            });
+            return next(new ErrorResponse(`Income to edit not found with id of ${req.params.id}`, 404));
         }
 
         res.status(200).json({success: true, data: income});
 
     } catch(err) {
-        res.status(400).json({success: false})
-        console.log(err);
+        next(err);
     }
 
 }
@@ -101,10 +90,7 @@ exports.deleteIncome = async (req, res, next) => {
         const income = await Income.findByIdAndDelete(req.params.id);
 
         if(!income) {
-            return res.status(400).json({
-                    success: false,
-                    msg: 'Income to delete not found'
-            });
+            return next(new ErrorResponse(`Income to delete not found with id of ${req.params.id}`, 404));
         }
 
         res.status(200).json({
@@ -113,8 +99,7 @@ exports.deleteIncome = async (req, res, next) => {
         })
 
     } catch(err) {
-        res.status(400).json({success: false})
-        console.log(err);
+        next(err);
     }
 
 }
