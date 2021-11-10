@@ -85,9 +85,12 @@ exports.deleteSaving = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/savings/date/month/:month
 // @access    public
 exports.getSavingMonth = asyncHandler(async (req, res, next) => {
-    const month = Object.values(req.params);
+    const yearMonth = Object.values(req.params);
 
-    const saving = await Saving.find({"date.month": `${month}`});
+    const saving = await Saving.find({
+        "date.year": `${yearMonth[0]}`, 
+        "date.month": `${yearMonth[1]}`
+    });
 
     res.status(200).json({
         success:true,

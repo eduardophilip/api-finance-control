@@ -22,7 +22,7 @@ router.
     .delete(deleteSaving);
 
 router
-    .route('/date/month/:month')
+    .route('/date/month/:year/:month')
     .get(getSavingMonth);
 
 router

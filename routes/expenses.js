@@ -22,7 +22,7 @@ router.
     .delete(deleteExpense);
 
 router
-    .route('/date/month/:month')
+    .route('/date/month/:year/:month')
     .get(getExpenseMonth);
 
 router

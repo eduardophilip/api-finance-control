@@ -86,9 +86,12 @@ exports.deleteExpense = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/expenses/date/month/:month
 // @access    public
 exports.getExpenseMonth = asyncHandler(async (req, res, next) => {
-    const month = Object.values(req.params);
+    const yearMonth = Object.values(req.params);
 
-    const expense = await Expense.find({"date.month": `${month}`});
+    const expense = await Expense.find({
+        "date.year": `${yearMonth[0]}`, 
+        "date.month": `${yearMonth[1]}`
+    });
 
     res.status(200).json({
         success:true,

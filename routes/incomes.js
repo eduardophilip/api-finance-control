@@ -23,7 +23,7 @@ router
     .delete(deleteIncome);
 
 router
-    .route('/date/month/:month')
+    .route('/date/month/:year/:month')
     .get(getIncomeMonth);
 
 router
