@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const IncomeSchema = new mongoose.Schema({
     name: {
@@ -32,6 +33,11 @@ const IncomeSchema = new mongoose.Schema({
         type: Date,
         required: [true, 'Please add a date']
     }
+});
+
+IncomeSchema.pre('save', function(next) {
+    this.slug = slugify(this.name, {lower: true});
+    next();
 });
 
 module.exports = mongoose.model('Income', IncomeSchema)

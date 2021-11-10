@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const ExpenseSchema = new mongoose.Schema({
 
@@ -37,6 +38,11 @@ const ExpenseSchema = new mongoose.Schema({
         type: Date,
         required: [true, 'Please add a date']
     }
+});
+
+ExpenseSchema.pre('save', function(next) {
+    this.slug = slugify(this.name, {lower: true});
+    next()
 });
 
 module.exports = mongoose.model('Expense', ExpenseSchema);
