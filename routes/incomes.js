@@ -4,7 +4,9 @@ const {
     getIncome,
     addIncome,
     editIncome,
-    deleteIncome
+    deleteIncome,
+    getIncomeMonth,
+    getIncomeYear
 } = require('../controllers/incomes')
 
 const router = express.Router();
@@ -19,5 +21,13 @@ router
     .get(getIncome)
     .put(editIncome)
     .delete(deleteIncome);
+
+router
+    .route('/date/month/:month')
+    .get(getIncomeMonth);
+
+router
+    .route('/date/year/:year')
+    .get(getIncomeYear);
 
 module.exports = router;

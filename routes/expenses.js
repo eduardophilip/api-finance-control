@@ -4,7 +4,9 @@ const {
     getExpense,
     addExpense,
     editExpense,
-    deleteExpense
+    deleteExpense,
+    getExpenseMonth,
+    getExpenseYear
 } = require('../controllers/expenses');
 const router = express.Router();
 
@@ -18,5 +20,13 @@ router.
     .get(getExpense)
     .put(editExpense)
     .delete(deleteExpense);
+
+router
+    .route('/date/month/:month')
+    .get(getExpenseMonth);
+
+router
+    .route('/date/year/:year')
+    .get(getExpenseYear);
 
 module.exports = router;

@@ -80,3 +80,33 @@ exports.deleteIncome = asyncHandler(async (req, res, next) => {
     })
 
 });
+
+// @desc      Get all income per month
+// @route     GET /api/v1/incomes/date/month/:month
+// @access    public
+exports.getIncomeMonth = asyncHandler(async (req, res, next) => {
+    const month = Object.values(req.params);
+
+    const income = await Income.find({"date.month": `${month}`});
+
+    res.status(200).json({
+        success:true,
+        count: income.length,
+        data: income
+    });
+});
+
+// @desc      Get all income per year
+// @route     GET /api/v1/incomes/date/year/:year
+// @access    public
+exports.getIncomeYear = asyncHandler(async (req, res, next) => {
+    const year = Object.values(req.params);
+
+    const income = await Income.find({"date.year": `${year}`});
+
+    res.status(200).json({
+        success:true,
+        count: income.length,
+        data: income
+    });
+});

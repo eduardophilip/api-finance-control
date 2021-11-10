@@ -69,7 +69,7 @@ exports.editExpense = asyncHandler(async (req, res, next) => {
 // @route     DELETE /api/v1/expenses
 // @access    Private
 exports.deleteExpense = asyncHandler(async (req, res, next) => {
-    
+
     const expense = await Expense.findByIdAndDelete(req.params.id);
 
     if(!expense) {
@@ -79,5 +79,35 @@ exports.deleteExpense = asyncHandler(async (req, res, next) => {
     res.status(200).json({
         success: true,
         data: {}
+    });
+});
+
+// @desc      Get all expense per month
+// @route     GET /api/v1/expenses/date/month/:month
+// @access    public
+exports.getExpenseMonth = asyncHandler(async (req, res, next) => {
+    const month = Object.values(req.params);
+
+    const expense = await Expense.find({"date.month": `${month}`});
+
+    res.status(200).json({
+        success:true,
+        count: expense.length,
+        data: expense
+    });
+});
+
+// @desc      Get all expense per year
+// @route     GET /api/v1/expenses/date/year/:year
+// @access    public
+exports.getExpenseYear = asyncHandler(async (req, res, next) => {
+    const year = Object.values(req.params);
+
+    const expense = await Expense.find({"date.year": `${year}`});
+
+    res.status(200).json({
+        success:true,
+        count: expense.length,
+        data: expense
     });
 });
