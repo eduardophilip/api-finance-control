@@ -20,11 +20,13 @@ app.use(express.json());
 const incomes = require('./routes/incomes');
 const expenses = require('./routes/expenses');
 const savings = require('./routes/savings');
+const searches = require('./routes/searches');
 
 // Routes
 app.use('/api/v1/incomes', incomes);
 app.use('/api/v1/expenses', expenses);
 app.use('/api/v1/savings', savings);
+app.use('/api/v1/search', searches);
 
 app.use(errorHandler);
 

@@ -7,6 +7,10 @@ const SavingSchema = new mongoose.Schema({
         type: String,
         default: 'Saving'
     },
+    transactionType: {
+        type: String,
+        default: 'Saving'
+    },
     slug: String,
     amount: {
         type: Number,

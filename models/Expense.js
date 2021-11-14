@@ -8,6 +8,10 @@ const ExpenseSchema = new mongoose.Schema({
         required: [true, 'Please add the transaction name'],
         maxlength: [30, 'The transaction name cant not be more than 30 characters']
     },
+    transactionType: {
+        type: String,
+        default: 'expense'
+    },
     slug: String,
     amount: {
         type: Number,
