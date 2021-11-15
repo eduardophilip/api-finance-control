@@ -1,6 +1,6 @@
 const requestQuery = (reqQuery) => {
-
-    const hasName = reqQuery.hasOwnProperty('name');
+    
+    const hasSlug = reqQuery.hasOwnProperty('slug');
     const hasAmount = reqQuery.hasOwnProperty('amount');
     const hasday = reqQuery.hasOwnProperty('day');
     const hasMonth = reqQuery.hasOwnProperty('month');
@@ -16,10 +16,10 @@ const requestQuery = (reqQuery) => {
     let category;
     let transactionType;
 
-    if(hasName) {
+    if(hasSlug) {
         name = {
-            name: {
-                $regex: `${reqQuery.name}`,
+            slug: {
+                $regex: `${reqQuery.slug.split(' ').join('-')}`,
                 $options: 'i' 
             }
         } 
