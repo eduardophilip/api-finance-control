@@ -3,6 +3,7 @@ const app = express();
 const dotenv = require('dotenv');
 const colors = require('colors');
 const connectDB = require('./config/db');
+const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const errorHandler = require('./middleware/error')
 
@@ -15,6 +16,7 @@ if(process.env.NODE_ENV === 'development') {
 connectDB();
 
 app.use(express.json());
+app.use(cookieParser());
 
 // Require routes
 const incomes = require('./routes/incomes');

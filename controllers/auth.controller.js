@@ -1,5 +1,6 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
+const sendTokenResponse = require('../middleware/setCookietoken')
 const User = require('../models/User');
 
 // @desc      Register user
@@ -26,15 +27,7 @@ exports.register = asyncHandler(async (req, res, next) => {
         password
     });
 
-    user.password = undefined;
-
-    const token = user.getSignedJwtToken();
-  
-    res.status(200).json({ 
-        success: true, 
-        user,
-        token 
-    });
+    sendTokenResponse(user, 200, res)
 });
 
 // @desc      Login user
@@ -60,13 +53,5 @@ exports.login = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse('Invalid password', 401));
     }
 
-    user.password = undefined;
-
-    const token = user.getSignedJwtToken();
-  
-    res.status(200).json({ 
-        success: true,
-        user, 
-        token 
-    });
+    sendTokenResponse(user, 200, res)
   }); 
