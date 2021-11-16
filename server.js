@@ -23,6 +23,7 @@ const savings = require('./routes/savings');
 const searches = require('./routes/searches');
 const category = require('./routes/category');
 const storeYear = require('./routes/storeYears');
+const months = require('./routes/months');
 
 // Routes
 app.use('/api/v1/incomes', incomes);
@@ -31,6 +32,7 @@ app.use('/api/v1/savings', savings);
 app.use('/api/v1/search', searches);
 app.use('/api/v1/categories', category);
 app.use('/api/v1/years', storeYear);
+app.use('/api/v1/months', months);
 
 app.use(errorHandler);
 
