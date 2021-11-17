@@ -5,12 +5,14 @@ const {
 } = require('../controllers/months.js');
 const router = express.Router();
 
+const { protect } = require('../middleware/auth.middleware');
+
 router
     .route('/')
-    .get(getMonths);
+    .get(protect, getMonths);
 
 router
     .route('/:abbreviation')
-    .get(getMonth);
+    .get(protect, getMonth);
 
 module.exports = router;

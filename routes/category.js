@@ -7,14 +7,16 @@ const {
  } = require('../controllers/category.js');
 const router = express.Router();
 
+const { protect } = require('../middleware/auth.middleware');
+
 router
     .route('/')
-    .get(getCategories)
-    .post(addCategory);
+    .get(protect, getCategories)
+    .post(protect, addCategory);
 
 router
     .route('/:id')
-    .put(updateCategory)
-    .delete(deleteCategory);
+    .put(protect, updateCategory)
+    .delete(protect, deleteCategory);
 
 module.exports = router;

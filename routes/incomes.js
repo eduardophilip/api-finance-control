@@ -11,23 +11,25 @@ const {
 
 const router = express.Router();
 
+const { protect } = require('../middleware/auth.middleware');
+
 router
     .route('/')
-    .get(getIncomes)
-    .post(addIncome);
+    .get(protect, getIncomes)
+    .post(protect, addIncome);
 
 router
     .route('/:id')
-    .get(getIncome)
-    .put(editIncome)
-    .delete(deleteIncome);
+    .get(protect, getIncome)
+    .put(protect, editIncome)
+    .delete(protect, deleteIncome);
 
 router
     .route('/date/month/:year/:month')
-    .get(getIncomeMonth);
+    .get(protect, getIncomeMonth);
 
 router
     .route('/date/year/:year')
-    .get(getIncomeYear);
+    .get(protect, getIncomeYear);
 
 module.exports = router;

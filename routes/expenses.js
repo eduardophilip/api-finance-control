@@ -10,23 +10,25 @@ const {
 } = require('../controllers/expenses');
 const router = express.Router();
 
+const { protect } = require('../middleware/auth.middleware');
+
 router
     .route('/')
-    .get(getExpenses)
-    .post(addExpense);
+    .get(protect, getExpenses)
+    .post(protect, addExpense);
 
 router.
     route('/:id')
-    .get(getExpense)
-    .put(editExpense)
+    .get(protect, getExpense)
+    .put(protect, editExpense)
     .delete(deleteExpense);
 
 router
     .route('/date/month/:year/:month')
-    .get(getExpenseMonth);
+    .get(protect, getExpenseMonth);
 
 router
     .route('/date/year/:year')
-    .get(getExpenseYear);
+    .get(protect, getExpenseYear);
 
 module.exports = router;

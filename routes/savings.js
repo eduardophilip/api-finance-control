@@ -10,23 +10,25 @@ const {
 } = require('../controllers/savings');
 const router = express.Router();
 
+const { protect } = require('../middleware/auth.middleware');
+
 router
     .route('/')
-    .get(getSavings)
-    .post(addSaving);
+    .get(protect, getSavings)
+    .post(protect, addSaving);
 
 router.
     route('/:id')
-    .get(getSaving)
-    .put(editSaving)
-    .delete(deleteSaving);
+    .get(protect, getSaving)
+    .put(protect, editSaving)
+    .delete(protect, deleteSaving);
 
 router
     .route('/date/month/:year/:month')
-    .get(getSavingMonth);
+    .get(protect, getSavingMonth);
 
 router
     .route('/date/year/:year')
-    .get(getSavingYear);
+    .get(protect, getSavingYear);
 
 module.exports = router;
