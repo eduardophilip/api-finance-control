@@ -255,8 +255,76 @@ Where **"CastError"** are equal to get single income.
 
 Where **"Id not found"** are equal to get single income.
 
-# Delete income
+# Get all income per month
 
 ### Request
 
-`DELETE /api/v1/incomes/:id`
+`GET /api/v1/incomes/date/month/:year/:month`
+
+### Response
+    Status: 200 OK
+    Content-Type: application/json
+
+```json
+{ 
+    "success": boolean,
+    "count": number,
+    "data": [
+        {
+            "date": {
+                "year": "string",
+                "month": "string",
+                "day": "string"
+            },
+            "_id": "6194627c48529a2648c86c94",
+            "name": "string",
+            "transactionType": "string",
+            "amount": number,
+            "dateValue": "date",
+            "user": {
+                "_id": "ObjecId",
+                "username": "string"
+            },
+            "slug": "string",
+            "__v": 0
+        }
+    ]
+}
+```
+
+# Get all income per year
+
+### Request
+
+`GET /api/v1/incomes/date/year/:year`
+
+### Response
+    Status: 200 OK
+    Content-Type: application/json
+
+```json
+{ 
+    "success": boolean,
+    "count": number,
+    "data": [
+        {
+            "date": {
+                "year": "string",
+                "month": "string",
+                "day": "string"
+            },
+            "_id": "6194627c48529a2648c86c94",
+            "name": "string",
+            "transactionType": "string",
+            "amount": number,
+            "dateValue": "date",
+            "user": {
+                "_id": "ObjecId",
+                "username": "string"
+            },
+            "slug": "string",
+            "__v": 0
+        }
+    ]
+}
+```
