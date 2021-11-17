@@ -26,7 +26,7 @@ This is the REST API to the Front-end of the aplication finance control consume.
                 "month": "string",
                 "day": "string"
             },
-            "_id": "6194627c48529a2648c86c94",
+            "_id": "ObjectId",
             "name": "string",
             "transactionType": "string",
             "amount": number,
@@ -62,7 +62,7 @@ This is the REST API to the Front-end of the aplication finance control consume.
                 "month": "string",
                 "day": "string"
             },
-            "_id": "6194627c48529a2648c86c94",
+            "_id": "ObjectId",
             "name": "string",
             "transactionType": "string",
             "amount": number,
@@ -189,7 +189,7 @@ Where **"ValidationError"** can be any of the following:
 
 ### Request
 
-`PUT /api/v1/incomes`
+`PUT /api/v1/incomes/:id`
 
 **Form data must have field names to be edited**
 
@@ -276,7 +276,7 @@ Where **"Id not found"** are equal to get single income.
                 "month": "string",
                 "day": "string"
             },
-            "_id": "6194627c48529a2648c86c94",
+            "_id": "ObjectId",
             "name": "string",
             "transactionType": "string",
             "amount": number,
@@ -313,10 +313,348 @@ Where **"Id not found"** are equal to get single income.
                 "month": "string",
                 "day": "string"
             },
-            "_id": "6194627c48529a2648c86c94",
+            "_id": "ObjectId",
             "name": "string",
             "transactionType": "string",
             "amount": number,
+            "dateValue": "date",
+            "user": {
+                "_id": "ObjecId",
+                "username": "string"
+            },
+            "slug": "string",
+            "__v": 0
+        }
+    ]
+}
+```
+
+# Routes to Expenses
+
+# Get All expenses
+
+### Request
+
+`GET /api/v1/expenses`
+
+### Response
+
+    Status: 200 OK
+    Content-Type: application/json
+
+```json
+{ 
+    "success": boolean,
+    "count": number,
+    "data": [
+        {
+            "date": {
+                "year": "string",
+                "month": "string",
+                "day": "string"
+            },
+            "_id": "ObjectId",
+            "name": "string",
+            "transactionType": "string",
+            "amount": number,
+            "category": "string",
+            "dateValue": "date",
+            "user": {
+                "_id": "ObjecId",
+                "username": "string"
+            },
+            "slug": "string",
+            "__v": 0
+        }
+    ]
+}
+```
+
+# Get single expense
+
+### Request
+
+`GET /api/v1/expenses/:id`
+
+### Response
+
+    Status: 200 OK
+    Content-Type: application/json
+
+```json
+{ 
+    "success": boolean,
+    "count": number,
+    "data": [
+        {
+            "date": {
+                "year": "string",
+                "month": "string",
+                "day": "string"
+            },
+            "_id": "ObjectId",
+            "name": "string",
+            "transactionType": "string",
+            "amount": number,
+            "category": "string",
+            "dateValue": "date",
+            "user": {
+                "_id": "ObjecId",
+                "username": "string"
+            },
+            "slug": "string",
+            "__v": 0
+        }
+    ]
+}
+```
+#### Error Responses
+    Status: 404 Not Found
+    Content-Type: application/json
+
+Where **"CastError"** can be any of the following:
+
+```json
+{
+    "success": false,
+    "error": "Transaction not found with id of id"
+}
+```
+
+Where **"Id not found"** can be the following:
+
+```json
+{
+    "success": false,
+    "error": "Expense not found with id of id"
+}
+```
+# Add expense
+
+### Request
+
+`POST /api/v1/expenses`
+
+**Form data must have:**
+```json
+{
+    "name": "string", //required
+    "amount": number, //required
+    "category": "string", //required
+    "date": {
+        "year": "string", //required
+        "month": "string", //required
+        "day": "string" //required
+    },
+    "dateValue": "string" //required
+}
+```
+
+<form>
+    <label for="category">categoty: </label>
+    <input id="categoty" name="categoty" placeholder="categoty"><br>
+    <label for="name">name: </label>
+    <input id="name" name="name" placeholder="Transaction name"><br>
+    <label for="amount">amount: </label>
+    <input id="amount" name="amount" placeholder="amount"><br>
+    <label for="date">date: </label>
+    <input id="date" name="date" type="date"placeholder="amount"><br>
+</form>
+
+### Response
+
+    Status: 200 OK
+    Content-Type: application/json
+
+```json
+{
+    "success": boolea,
+    "data": {
+        "name": "string",
+        "transactionType": "string",  //expense
+        "amount": number,
+         "category": "string",
+        "date": {
+            "year": "string",
+            "month": "string",
+            "day": "string"
+        },
+        "dateValue": "Date",
+        "user": {
+            "_id": "ObjectId",
+            "fullName": "string",
+            "username": "string",
+            "email": "string",
+            "createdAt": "string",
+            "__v": 0
+        },
+        "_id": "ObjectId",
+        "slug": "string",
+        "__v": 0
+    }
+}
+```
+#### Error Responses
+    Status: 400 Bad Request
+    Content-Type: application/json
+
+Where **"ValidationError"** can be any of the following:
+
+```json
+{
+    "success": false,
+    "error": "Please add the transaction name", // name is require
+                                ||
+    "error": "The transaction name cant not be more than 30 characters", // name until 30 characters
+                                ||
+    "error": "Please add the value to transaction", // amount is required
+                                ||
+    "error": "Year can not be more than 4 characters", // date.year 
+                                ||
+    "error": "Month can not be more than 2 characters", // date.month 
+                                ||
+    "error": "Day can not be more than 2 characters", // date.day 
+                                ||
+    "error": "Day can not be more than 2 characters", // dateValue is required
+}
+    
+```
+
+# Edit expense
+
+### Request
+
+`PUT /api/v1/expenses/:id`
+
+**Form data must have field names to be edited**
+
+### Response
+
+    Status: 200 OK
+    Content-Type: application/json
+
+```json
+{
+    "success": boolean,
+    "data": {
+        "date": {
+            "year": "string",
+            "month": "string",
+            "day": "string"
+        },
+        "_id": "ObjectId",
+        "name": "string",
+        "transactionType": "string",
+        "amount": number,
+        "category": "string",
+        "dateValue": "Date",
+        "user": "ObjectId",
+        "slug": "string",
+        "__v": 0
+    }
+}
+```
+
+#### Error Responses
+    Status: 400 Bad Request
+    Content-Type: application/json
+
+Where **"ValidationError"** are equal to add expense.
+
+Where **"CastError"** are equal to get single expense.
+
+Where **"Id not found"** are equal to get single expense.
+
+# Delete expense
+
+### Request
+
+`DELETE /api/v1/expenses/:id`
+
+### Response
+
+    Status: 200 OK
+    Content-Type: application/json
+
+```json
+{
+    "success": true,
+    "data": {}
+}
+```
+#### Error Responses
+
+    Status: 404 Not Found
+    Content-Type: application/json
+
+Where **"CastError"** are equal to get single expense.
+
+Where **"Id not found"** are equal to get single expense.
+
+# Get all expenses per month
+
+### Request
+
+`GET /api/v1/expenses//date/month/:year/:month`
+
+### Response
+    Status: 200 OK
+    Content-Type: application/json
+
+```json
+{ 
+    "success": boolean,
+    "count": number,
+    "data": [
+        {
+            "date": {
+                "year": "string",
+                "month": "string",
+                "day": "string"
+            },
+            "_id": "ObjectId",
+            "name": "string",
+            "transactionType": "string",
+            "amount": number,
+            "category": "string",
+            "dateValue": "date",
+            "user": {
+                "_id": "ObjecId",
+                "username": "string"
+            },
+            "slug": "string",
+            "__v": 0
+        }
+    ]
+}
+```
+
+# Get all expenses per year
+
+### Request
+
+`GET /api/v1/expenses/date/year/:year`
+
+### Response
+    Status: 200 OK
+    Content-Type: application/json
+
+```json
+{ 
+    "success": boolean,
+    "count": number,
+    "data": [
+        {
+            "date": {
+                "year": "string",
+                "month": "string",
+                "day": "string"
+            },
+            "_id": "ObjectId",
+            "name": "string",
+            "transactionType": "string",
+            "amount": number,
+            "category": "string",
             "dateValue": "date",
             "user": {
                 "_id": "ObjecId",

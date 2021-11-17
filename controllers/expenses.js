@@ -19,7 +19,7 @@ exports.getExpenses = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Get single expense
-// @route     GET /api/v1/expenses
+// @route     GET /api/v1/expenses/:id
 // @access    Public
 exports.getExpense = asyncHandler(async (req, res, next) => {
 
@@ -74,7 +74,7 @@ exports.editExpense = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Delete expense
-// @route     DELETE /api/v1/expenses
+// @route     DELETE /api/v1/expenses/:id
 // @access    Private
 exports.deleteExpense = asyncHandler(async (req, res, next) => {
 
@@ -91,14 +91,18 @@ exports.deleteExpense = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Get all expense per month
-// @route     GET /api/v1/expenses/date/month/:month
+// @route     GET /api/v1/expenses//date/month/:year/:month
 // @access    public
 exports.getExpenseMonth = asyncHandler(async (req, res, next) => {
     const yearMonth = Object.values(req.params);
 
     const expense = await Expense.find({
         "date.year": `${yearMonth[0]}`, 
-        "date.month": `${yearMonth[1]}`
+        "date.month": `${yearMonth[1]}`,
+        user: req.user
+    }).populate({
+        path: 'user',
+        select: ' username'
     });
 
     res.status(200).json({
@@ -114,7 +118,13 @@ exports.getExpenseMonth = asyncHandler(async (req, res, next) => {
 exports.getExpenseYear = asyncHandler(async (req, res, next) => {
     const year = Object.values(req.params);
 
-    const expense = await Expense.find({"date.year": `${year}`});
+    const expense = await Expense.find({
+        "date.year": `${year}`,
+        user: req.user
+    }).populate({
+        path: 'user',
+        select: ' username'
+    });
 
     res.status(200).json({
         success:true,
