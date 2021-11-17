@@ -74,7 +74,7 @@ exports.editIncome = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Delete income
-// @route     DELETE /api/v1/incomes
+// @route     DELETE /api/v1/incomes/:id
 // @access    Private
 exports.deleteIncome = asyncHandler(async (req, res, next) => {
 
