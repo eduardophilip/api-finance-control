@@ -6,7 +6,10 @@ const asyncHandler = require('../middleware/asyncHandler');
 // @route     GET /api/v1/years
 // @access    Public
 exports.getYears = asyncHandler(async (req, res, next) => {
-    const year = await StoreYear.find();
+    const year = await StoreYear.find({user: req.user}).populate({
+        path: 'user',
+        select: ' username'
+    });
 
     res.status(200).json({
         success: true,
@@ -20,7 +23,10 @@ exports.getYears = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.getYear = asyncHandler(async (req, res, next) => {
 
-    const year = await StoreYear.findById(req.params.id);
+    const year = await StoreYear.findById(req.params.id).populate({
+        path: 'user',
+        select: ' username'
+    });;
 
     if (!year) {
         return next(new ErrorResponse(`year not found with id of ${req.params.id}`, 404));
@@ -36,8 +42,9 @@ exports.getYear = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/years
 // @access    Private
 exports.addYear = asyncHandler(async (req, res, next) => {
+    const user = req.user
 
-    const year = await StoreYear.create(req.body);
+    const year = await StoreYear.create({...req.body, user: user});
 
     res.status(201).json({
         success: true,

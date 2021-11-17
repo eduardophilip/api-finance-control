@@ -36,6 +36,11 @@ const SavingSchema = new mongoose.Schema({
     dateValue: {
         type: Date,
         required: [true, 'Please add a date']
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        require: true,
     }
 });
 

@@ -6,7 +6,12 @@ const asyncHandler = require('../middleware/asyncHandler');
 // @route     GET /api/v1/incomes
 // @access    Public
 exports.getIncomes = asyncHandler(async (req, res, next) => {
-    const income = await Income.find()
+
+    const income = await Income.find({user: req.user}).populate({
+        path: 'user',
+        select: ' username'
+    });
+
     res.status(200).json({
         success: true, 
         count: income.length, 
@@ -19,7 +24,10 @@ exports.getIncomes = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.getIncome = asyncHandler(async (req, res, next) => {
 
-    const income = await Income.findById(req.params.id);
+    const income = await Income.findById(req.params.id).populate({
+        path: 'user',
+        select: ' username'
+    });;
 
     if(!income) {
         return next(new ErrorResponse(`Income not found with id of ${req.params.id}`, 404));
@@ -36,7 +44,9 @@ exports.getIncome = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.addIncome = asyncHandler(async (req, res, next) => {
 
-    const income = await Income.create(req.body);
+    const user = req.user
+
+    const income = await Income.create({...req.body, user: user});
 
     res.status(201).json({
         success: true,
@@ -89,7 +99,11 @@ exports.getIncomeMonth = asyncHandler(async (req, res, next) => {
 
     const income = await Income.find({
         "date.year": `${yearMonth[0]}`, 
-        "date.month": `${yearMonth[1]}`
+        "date.month": `${yearMonth[1]}`,
+        user: req.user
+    }).populate({
+        path: 'user',
+        select: ' username'
     });
 
     res.status(200).json({
@@ -105,7 +119,13 @@ exports.getIncomeMonth = asyncHandler(async (req, res, next) => {
 exports.getIncomeYear = asyncHandler(async (req, res, next) => {
     const year = Object.values(req.params);
 
-    const income = await Income.find({"date.year": `${year}`});
+    const income = await Income.find({
+        "date.year": `${year}`,
+        user: req.user
+    }).populate({
+        path: 'user',
+        select: ' username'
+    });
 
     res.status(200).json({
         success:true,

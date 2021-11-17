@@ -6,7 +6,12 @@ const asyncHandler = require('../middleware/asyncHandler');
 // @route     GET /api/v1/categories
 // @access    Public
 exports.getCategories = asyncHandler(async (req, res, next) => {
-    const category = await Category.find()
+
+    const category = await Category.find({user: req.user}).populate({
+        path: 'user',
+        select: ' username'
+    });
+    
     res.status(200).json({
         success: true, 
         count: category.length, 
@@ -19,7 +24,9 @@ exports.getCategories = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.addCategory = asyncHandler(async (req, res, next) => {
 
-    const category = await Category.create(req.body);
+    const user = req.user
+
+    const category = await Category.create({...req.body, user: user});
 
     res.status(201).json({
         success: true,

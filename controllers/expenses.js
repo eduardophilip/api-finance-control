@@ -6,7 +6,10 @@ const asyncHandler = require('../middleware/asyncHandler');
 // @route     GET /api/v1/expenses
 // @access    Public
 exports.getExpenses = asyncHandler(async (req, res, next) => {
-    const expense = await Expense.find();
+    const expense = await Expense.find({user: req.user}).populate({
+        path: 'user',
+        select: ' username'
+    });
 
     res.status(200).json({
         success: true,
@@ -20,7 +23,10 @@ exports.getExpenses = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.getExpense = asyncHandler(async (req, res, next) => {
 
-    const expense = await Expense.findById(req.params.id);
+    const expense = await Expense.findById(req.params.id).populate({
+        path: 'user',
+        select: ' username'
+    });;
 
     if (!expense) {
         return next(new ErrorResponse(`Expense not found with id of ${req.params.id}`, 404));
@@ -37,7 +43,9 @@ exports.getExpense = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.addExpense = asyncHandler(async (req, res, next) => {
 
-    const expense = await Expense.create(req.body);
+    const user = req.user
+
+    const expense = await Expense.create({...req.body, user: user});
 
     res.status(201).json({
         success: true,

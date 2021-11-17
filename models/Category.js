@@ -9,6 +9,11 @@ const CategorySchema = new mongoose.Schema({
         maxlength: [30, 'The category name can not be more than 50 characters'] 
     },
     slug: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        require: true,
+    }
 });
 
 CategorySchema.pre('save', function(next) {

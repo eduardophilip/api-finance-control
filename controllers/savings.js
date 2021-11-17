@@ -6,7 +6,11 @@ const asyncHandler = require('../middleware/asyncHandler');
 // @route     GET /api/v1/savings
 // @access    Public
 exports.getSavings = asyncHandler(async (req, res, next) => {
-    const saving = await Saving.find()
+    const saving = await Saving.find({user: req.user}).populate({
+        path: 'user',
+        select: ' username'
+    });
+
     res.status(200).json({
         success: true, 
         count: saving.length, 
@@ -19,7 +23,10 @@ exports.getSavings = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.getSaving = asyncHandler(async (req, res, next) => {
 
-    const saving = await Saving.findById(req.params.id);
+    const saving = await Saving.findById(req.params.id).populate({
+        path: 'user',
+        select: ' username'
+    });
 
     if(!saving) {
         return next(new ErrorResponse(`Saving not found with id of ${req.params.id}`, 404));
@@ -36,7 +43,9 @@ exports.getSaving = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.addSaving = asyncHandler(async (req, res, next) => {
 
-    const saving = await Saving.create(req.body);
+    const user = req.user
+
+    const saving = await Saving.create({...req.body, user: user});
 
     res.status(201).json({
         success: true,
@@ -89,7 +98,11 @@ exports.getSavingMonth = asyncHandler(async (req, res, next) => {
 
     const saving = await Saving.find({
         "date.year": `${yearMonth[0]}`, 
-        "date.month": `${yearMonth[1]}`
+        "date.month": `${yearMonth[1]}`,
+        user: req.user
+    }).populate({
+        path: 'user',
+        select: ' username'
     });
 
     res.status(200).json({
@@ -105,7 +118,13 @@ exports.getSavingMonth = asyncHandler(async (req, res, next) => {
 exports.getSavingYear = asyncHandler(async (req, res, next) => {
     const year = Object.values(req.params);
 
-    const saving = await Saving.find({"date.year": `${year}`});
+    const saving = await Saving.find({
+        "date.year": `${year}`,
+        user: req.user
+    }).populate({
+        path: 'user',
+        select: ' username'
+    });
 
     res.status(200).json({
         success:true,

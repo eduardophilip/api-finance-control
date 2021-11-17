@@ -11,11 +11,14 @@ const Saving = require('../models/Saving');
 exports.queryFiltering = asyncHandler(async (req, res, next) => {
 
     const params = req.params.transactionType
-    let query = requestQuery(req.query);
+    let query = requestQuery(req.query, req.user);
 
     if (params ===  'income') {
         
-        const income = await Income.find(query);
+        const income = await Income.find(query).populate({
+            path: 'user',
+            select: ' username'
+        });
         
         res.status(200).json({
             success: true, 
@@ -25,7 +28,10 @@ exports.queryFiltering = asyncHandler(async (req, res, next) => {
 
     } else if (params ===  'expense') {
         
-        const expense = await Expense.find(query);
+        const expense = await Expense.find(query).populate({
+            path: 'user',
+            select: ' username'
+        });
         
         res.status(200).json({
             success: true, 
@@ -35,7 +41,10 @@ exports.queryFiltering = asyncHandler(async (req, res, next) => {
         
     } else if (params === 'saving') {
 
-        const saving = await Saving.find(query);
+        const saving = await Saving.find(query).populate({
+            path: 'user',
+            select: ' username'
+        });
 
         res.status(200).json({
             success: true, 
@@ -45,9 +54,18 @@ exports.queryFiltering = asyncHandler(async (req, res, next) => {
 
     } else {
 
-        const income = await Income.find(query);
-        const expense = await Expense.find(query);
-        const saving = await Saving.find(query);
+        const income = await Income.find(query).populate({
+            path: 'user',
+            select: ' username'
+        });;
+        const expense = await Expense.find(query).populate({
+            path: 'user',
+            select: ' username'
+        });;
+        const saving = await Saving.find(query).populate({
+            path: 'user',
+            select: ' username'
+        });;
 
         res.status(200).json({
             success: true,

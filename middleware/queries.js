@@ -1,4 +1,4 @@
-const requestQuery = (reqQuery) => {
+const requestQuery = (reqQuery, reqUser) => {
     
     const hasSlug = reqQuery.hasOwnProperty('slug');
     const hasAmount = reqQuery.hasOwnProperty('amount');
@@ -73,8 +73,9 @@ const requestQuery = (reqQuery) => {
             }
         }
     }
-
-    const query = Object.assign({}, name, amount, day, month, year, category, transactionType); 
+    const user = {user: reqUser};
+    
+    const query = Object.assign({}, name, amount, day, month, year, category, transactionType, user); 
 
     return query;
 
