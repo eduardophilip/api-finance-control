@@ -18,7 +18,7 @@ exports.getSavings = asyncHandler(async (req, res, next) => {
     });
 });
 
-// @desc      Get single saving
+// @desc      Get single savings
 // @route     GET /api/v1/savings
 // @access    Public
 exports.getSaving = asyncHandler(async (req, res, next) => {
@@ -38,7 +38,7 @@ exports.getSaving = asyncHandler(async (req, res, next) => {
     });
 });
 
-// @desc      Add new saving
+// @desc      Add new savings
 // @route     POST /api/v1/savings
 // @access    Private
 exports.addSaving = asyncHandler(async (req, res, next) => {
@@ -54,8 +54,8 @@ exports.addSaving = asyncHandler(async (req, res, next) => {
 
 });
 
-// @desc      Edit saving
-// @route     PUT /api/v1/savings
+// @desc      Edit savings
+// @route     PUT /api/v1/savings/:id
 // @access    Private
 exports.editSaving = asyncHandler(async (req, res, next) => {
 
@@ -72,8 +72,8 @@ exports.editSaving = asyncHandler(async (req, res, next) => {
 
 });
 
-// @desc      Delete saving
-// @route     DELETE /api/v1/savings
+// @desc      Delete savings
+// @route     DELETE /api/v1/savings/:id
 // @access    Private
 exports.deleteSaving = asyncHandler(async (req, res, next) => {
 

@@ -5,11 +5,11 @@ const SavingSchema = new mongoose.Schema({
 
     name: {
         type: String,
-        default: 'Saving'
+        default: 'Savings'
     },
     transactionType: {
         type: String,
-        default: 'Saving'
+        default: 'Savings'
     },
     slug: String,
     amount: {
